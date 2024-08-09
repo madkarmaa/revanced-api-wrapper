@@ -1,0 +1,5 @@
+env/
+dist/
+revanced_api_wrapper.egg-info/
+test.py
+__pycache__/
