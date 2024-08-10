@@ -83,7 +83,7 @@ class ReVancedAPI(object):
     @staticmethod
     def is_contributor(github_username: str) -> bool:
         return github_username in set(
-            [
+            [ # https://www.leocon.dev/blog/2021/09/how-to-flatten-a-python-list-array-and-which-one-should-you-use/#11-list-comprehension
                 contributor['name']
                 for contributors
                 in [
