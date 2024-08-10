@@ -75,6 +75,10 @@ class ReVancedAPI(object):
         return ENDPOINTS['contributors'].get().json()
 
     @staticmethod
+    def is_contributor(github_username: str) -> bool:
+        return github_username in set([contributor['name'] for contributors in [project['contributors'] for project in ReVancedAPI.get_contributors()] for contributor in contributors])
+
+    @staticmethod
     def get_team_members() -> list[Any]:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['team'].get().json()
