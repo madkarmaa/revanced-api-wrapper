@@ -1,4 +1,5 @@
 graft revanced_api_wrapper
 include pyproject.toml
 include setup.py
+include requirements.txt
 global-exclude *.py[cod]
