@@ -52,7 +52,13 @@ class ReVancedAPI(object):
     @staticmethod
     def get_patches_for_package(package_name: str) -> list[Any]:
         ReVancedAPI._check_rate_limited()
-        return [patch for patch in ReVancedAPI.get_latest_patches_list() if not patch['compatiblePackages'] or package_name in patch['compatiblePackages']]
+        return [
+            patch
+            for patch
+            in ReVancedAPI.get_latest_patches_list()
+            if not patch['compatiblePackages']
+            or package_name in patch['compatiblePackages']
+        ]
 
     @staticmethod
     def get_patches_pgp_key() -> str:
@@ -76,7 +82,19 @@ class ReVancedAPI(object):
 
     @staticmethod
     def is_contributor(github_username: str) -> bool:
-        return github_username in set([contributor['name'] for contributors in [project['contributors'] for project in ReVancedAPI.get_contributors()] for contributor in contributors])
+        return github_username in set(
+            [
+                contributor['name']
+                for contributors
+                in [
+                    project['contributors']
+                    for project
+                    in ReVancedAPI.get_contributors()
+                ]
+                for contributor
+                in contributors
+            ]
+        )
 
     @staticmethod
     def get_team_members() -> list[Any]:
