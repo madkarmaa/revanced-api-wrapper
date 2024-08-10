@@ -50,6 +50,11 @@ class ReVancedAPI(object):
         return ENDPOINTS['patches_latest_list'].get().json()
 
     @staticmethod
+    def get_patches_for_package(package_name: str) -> Any:
+        ReVancedAPI._check_rate_limited()
+        return [patch for patch in ReVancedAPI.get_latest_patches_list() if not patch['compatiblePackages'] or package_name in patch['compatiblePackages']]
+
+    @staticmethod
     def get_patches_pgp_key() -> str:
         ReVancedAPI._check_rate_limited()
         return str(ENDPOINTS['patches_keys'].get().json()['patches_public_key']).strip()
