@@ -102,6 +102,15 @@ class ReVancedAPI(object):
         return ENDPOINTS['team'].get().json()
 
     @staticmethod
+    def is_team_member(github_username: str) -> bool:
+        ReVancedAPI._check_rate_limited()
+        return github_username in [
+            member['name']
+            for member
+            in ReVancedAPI.get_team_members()
+        ]
+
+    @staticmethod
     def get_about() -> Any:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['about'].get().json()
