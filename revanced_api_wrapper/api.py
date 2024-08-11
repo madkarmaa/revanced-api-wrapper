@@ -1,4 +1,6 @@
+from os import path
 from typing import Any
+from urllib.request import urlretrieve
 from .constants import ENDPOINTS
 
 class ReVancedAPI(object):
@@ -64,6 +66,39 @@ class ReVancedAPI(object):
     def patches_pgp_key() -> str:
         ReVancedAPI._check_rate_limited()
         return str(ENDPOINTS['patches_keys'].get().json()['patches_public_key']).strip()
+
+    @staticmethod
+    def _download_file(download_url: str, out_dir: str = './') -> bool:
+        ReVancedAPI._check_rate_limited()
+
+        file_path: str = path.normpath(path.abspath(path.join(out_dir, download_url.split('/').pop())))
+
+        try:
+            urlretrieve(download_url, file_path)
+        except:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def download_patches_jar(out_dir: str = './') -> bool:
+        download_url: str = [
+            asset
+            for asset
+            in ReVancedAPI.latest_patches_release()['assets']
+            if asset['name'] == 'PATCHES'
+        ][0]['download_url']
+        return ReVancedAPI._download_file(download_url, out_dir)
+
+    @staticmethod
+    def download_integrations_apk(out_dir: str = './') -> bool:
+        download_url: str = [
+            asset
+            for asset
+            in ReVancedAPI.latest_patches_release()['assets']
+            if asset['name'] == 'INTEGRATION'
+        ][0]['download_url']
+        return ReVancedAPI._download_file(download_url, out_dir)
 
     @staticmethod
     def latest_manager_release() -> Any:
