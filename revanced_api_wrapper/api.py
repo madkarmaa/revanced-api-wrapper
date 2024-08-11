@@ -17,7 +17,7 @@ class ReVancedAPI(object):
             raise RuntimeError('User is rate limited, try again later.')
 
     @staticmethod
-    def get_announcements(from_oldest: bool = False) -> list[Any]:
+    def announcements(from_oldest: bool = False) -> list[Any]:
         ReVancedAPI._check_rate_limited()
         announcements: list[Any] = ENDPOINTS['announcements'].get().json()
         if not from_oldest:
@@ -25,27 +25,27 @@ class ReVancedAPI(object):
         return announcements
 
     @staticmethod
-    def get_announcements_length() -> int:
+    def announcements_length() -> int:
         ReVancedAPI._check_rate_limited()
-        return len(ReVancedAPI.get_announcements())
+        return len(ReVancedAPI.announcements())
 
     @staticmethod
     def get_nth_announcement(n: int) -> Any:
         ReVancedAPI._check_rate_limited()
-        return ReVancedAPI.get_announcements()[n]
+        return ReVancedAPI.announcements()[n]
 
     @staticmethod
-    def get_latest_patches_release() -> Any:
+    def latest_patches_release() -> Any:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['patches_latest'].get().json()
 
     @staticmethod
-    def get_latest_patches_version() -> str:
+    def latest_patches_version() -> str:
         ReVancedAPI._check_rate_limited()
         return str(ENDPOINTS['patches_latest_version'].get().json()['version']).lstrip('v')
 
     @staticmethod
-    def get_latest_patches_list() -> list[Any]:
+    def latest_patches_list() -> list[Any]:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['patches_latest_list'].get().json()
 
@@ -55,28 +55,28 @@ class ReVancedAPI(object):
         return [
             patch
             for patch
-            in ReVancedAPI.get_latest_patches_list()
+            in ReVancedAPI.latest_patches_list()
             if not patch['compatiblePackages']
             or package_name in patch['compatiblePackages']
         ]
 
     @staticmethod
-    def get_patches_pgp_key() -> str:
+    def patches_pgp_key() -> str:
         ReVancedAPI._check_rate_limited()
         return str(ENDPOINTS['patches_keys'].get().json()['patches_public_key']).strip()
 
     @staticmethod
-    def get_latest_manager_release() -> Any:
+    def latest_manager_release() -> Any:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['manager_latest'].get().json()
 
     @staticmethod
-    def get_latest_manager_version() -> str:
+    def latest_manager_version() -> str:
         ReVancedAPI._check_rate_limited()
         return str(ENDPOINTS['manager_latest_version'].get().json()['version']).lstrip('v')
 
     @staticmethod
-    def get_contributors() -> list[Any]:
+    def contributors() -> list[Any]:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['contributors'].get().json()
 
@@ -89,7 +89,7 @@ class ReVancedAPI(object):
                 in [
                     project['contributors']
                     for project
-                    in ReVancedAPI.get_contributors()
+                    in ReVancedAPI.contributors()
                 ]
                 for contributor
                 in contributors
@@ -97,7 +97,7 @@ class ReVancedAPI(object):
         )
 
     @staticmethod
-    def get_team_members() -> list[Any]:
+    def team_members() -> list[Any]:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['team'].get().json()
 
@@ -107,11 +107,11 @@ class ReVancedAPI(object):
         return github_username in [
             member['name']
             for member
-            in ReVancedAPI.get_team_members()
+            in ReVancedAPI.team_members()
         ]
 
     @staticmethod
-    def get_about() -> Any:
+    def about() -> Any:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['about'].get().json()
 
