@@ -111,6 +111,11 @@ class ReVancedAPI(object):
         return str(ENDPOINTS['manager_latest_version'].get().json()['version']).lstrip('v')
 
     @staticmethod
+    def download_manager_apk(out_dir: str = './') -> bool:
+        download_url: str = ReVancedAPI.latest_manager_release()['assets'][0]['download_url']
+        return ReVancedAPI._download_file(download_url, out_dir)
+
+    @staticmethod
     def contributors() -> list[Any]:
         ReVancedAPI._check_rate_limited()
         return ENDPOINTS['contributors'].get().json()
